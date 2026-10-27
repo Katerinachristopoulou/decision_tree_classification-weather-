@@ -18,21 +18,16 @@ from Kaggle and predicts the hourly weather summary, grouped into 5 classes
 - **Month** (extracted from the timestamp)
 - **Precipitation type** (rain / snow / none, one-hot encoded)
 - Excluded columns: `Apparent Temperature (C)` (almost a copy of temperature) and `Daily Summary` (leaks the target), plus `Loud Cover`, which is all zeros.
+## Methodology
 
-Steps:
+### Preprocessing
 
-1. Clean the data (drop leakage-prone and empty columns, treat pressure 0 as missing, add hour/month features).
-2. Pick the tree depth with 5-fold cross-validation (scored by macro F1, with balanced class weights).
-3. Grid search over `max_depth`, `min_samples_leaf` and `ccp_alpha`.
-4. Compare two parameter sets (Gini/no pruning vs Entropy/pruned) using 5- and 10-fold CV
-   and repeated 70/30 and 80/20 train/test splits.
-
-## Outputs
-
-- `DecisionTree_Comparison.xlsx`: accuracy and macro F1 for each parameter set and validation method
-- `cv_accuracy.png`: CV score vs tree depth
-- `decision_tree.png`: top levels of the depth-selected tree
-- `tree_set1.png`, `tree_set2.png`: top levels of the two compared trees
+- **Time features:** Extracted `Hour` and `Month` from the date, since weather depends on the time of day and the season.
+- **Missing pressure:** Pressure readings of 0 were treated as missing values, because they are sensor gaps and not real measurements.
+- **Dropped columns:** `Daily Summary` (leaks the target), `Apparent Temperature (C)` (almost the same as temperature) and `Loud Cover` (all zeros).
+- **Target grouping:** Grouped the many `Summary` labels into 5 classes: Rainy, Windy, Foggy, Cloudy and Clear. When a label mentions several conditions, the rarer one wins (Rainy > Windy > Foggy > Cloudy > Clear).
+- **Encoding:** Filled missing `Precip Type` values with "none" and one-hot encoded the column.
+  
 
 ## Running
 
