@@ -27,6 +27,7 @@ from Kaggle and predicts the hourly weather summary, grouped into 5 classes
 - **Dropped columns:** `Daily Summary` (leaks the target), `Apparent Temperature (C)` (no improvement from temperature) and `Loud Cover` (all zeros).
 - **Target grouping:** Grouped the many `Summary` labels into general classes: Rainy, Windy, Foggy, Cloudy and Clear. This was done for improving performance through generalisation.
 - **Encoding:** Filled missing `Precip Type` values with "none" and one-hot encoded the column.
+- - **Target grouping:** Specific `Summary` labels (e.g. "Breezy and Overcast") were generalised into 5 categories (Rainy, Windy, Foggy, Cloudy, Clear) that are both descriptive and predictable. Labels with several conditions take the rarer one (Rainy > Windy > Foggy > Cloudy > Clear).
   
 
 ## Running
