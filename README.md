@@ -23,9 +23,9 @@ from Kaggle and predicts the hourly weather summary, grouped into 5 classes
 ### Preprocessing
 
 - **Time features:** Extracted `Hour` and `Month` from the date, since weather depends on the time of day and the season.
-- **Missing pressure:** Pressure readings of 0 were treated as missing values, because they are sensor gaps and not real measurements.
-- **Dropped columns:** `Daily Summary` (leaks the target), `Apparent Temperature (C)` (almost the same as temperature) and `Loud Cover` (all zeros).
-- **Target grouping:** Grouped the many `Summary` labels into 5 classes: Rainy, Windy, Foggy, Cloudy and Clear. When a label mentions several conditions, the rarer one wins (Rainy > Windy > Foggy > Cloudy > Clear).
+- **Missing pressure:** Pressure readings of 0 were treated as missing values
+- **Dropped columns:** `Daily Summary` (leaks the target), `Apparent Temperature (C)` (no improvement from temperature) and `Loud Cover` (all zeros).
+- **Target grouping:** Grouped the many `Summary` labels into general classes: Rainy, Windy, Foggy, Cloudy and Clear. This was done for improving performance through generalisation.
 - **Encoding:** Filled missing `Precip Type` values with "none" and one-hot encoded the column.
   
 
