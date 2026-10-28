@@ -129,12 +129,12 @@ grid_preds = grid.best_estimator_.predict(X_test)
 print(f"Grid search test accuracy: {accuracy_score(y_test, grid_preds):.4f}")
 print(f"Grid search test macro F1: {f1_score(y_test, grid_preds, average='macro'):.4f}")
 
-# Plot CV accuracy vs depth
+# Plot CV macro F1 vs depth
 plt.figure(figsize=(8, 5))
 plt.plot(list(depths), cv_scores, marker="o")
 plt.xlabel("max_depth")
-plt.ylabel("Mean CV accuracy")
-plt.title("Decision tree depth selection (5-fold CV)")
+plt.ylabel("Mean CV macro F1")
+plt.title("Decision tree depth selection (5-fold CV, macro F1)")
 plt.grid(True)
 plt.tight_layout()
 plt.savefig("cv_accuracy.png")
@@ -257,3 +257,34 @@ for tree, title, filename in [
 # (plt.show() would keep the script running until every window is closed)
 plt.close("all")
 print("Plots saved: cv_accuracy.png, decision_tree.png, tree_set1.png, tree_set2.png")
+
+# ======================================
+# EXPORT RESULTS FOR THE README
+# ======================================
+table = results_df.copy()
+for col in ["Accuracy", "Accuracy Std Dev", "Macro F1", "Macro F1 Std Dev"]:
+    table[col] = table[col].round(4)
+
+with open("results.md", "w") as f:
+    f.write("## Results\n\n")
+    f.write(f"Majority-class baseline accuracy: **{baseline:.4f}**\n\n")
+
+    f.write("### Model selection\n\n")
+    f.write(f"- Best `max_depth` (5-fold CV): **{best_depth}**\n")
+    f.write(f"- Test accuracy / macro F1: **{accuracy_score(y_test, test_preds):.4f}** / "
+            f"**{f1_score(y_test, test_preds, average='macro'):.4f}**\n")
+    f.write(f"- Best grid search parameters: **{grid.best_params_}**\n")
+    f.write(f"- Grid search test accuracy / macro F1: **{accuracy_score(y_test, grid_preds):.4f}** / "
+            f"**{f1_score(y_test, grid_preds, average='macro'):.4f}**\n\n")
+
+    f.write("### Parameter set comparison\n\n")
+    f.write(table.to_markdown(index=False))  # needs the tabulate package
+    f.write("\n\n")
+
+    f.write("### Charts\n\n")
+    f.write("![Depth selection](cv_accuracy.png)\n\n")
+    f.write("![Decision tree](decision_tree.png)\n\n")
+    f.write("![Set 1 tree](tree_set1.png)\n\n")
+    f.write("![Set 2 tree](tree_set2.png)\n")
+
+print("Results written to results.md")
