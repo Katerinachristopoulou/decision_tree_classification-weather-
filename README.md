@@ -27,7 +27,7 @@ from Kaggle and predicts the hourly weather summary, grouped into 5 classes
 - **Missing pressure:** Pressure readings of 0 were treated as missing values.
 - **Dropped columns:** `Daily Summary` (leaks the target), `Apparent Temperature (C)` (adds nothing beyond temperature) and `Loud Cover` (all zeros).
 
-  ### Target Grouping
+### Target Grouping
 
 The original `Summary` column contains many very specific labels (e.g. "Breezy and Overcast"). These were generalised into 5 categories (Rainy, Windy, Foggy, Cloudy and Clear), which are descriptive enough to be meaningful and still predictable from the weather measurements.
 
@@ -55,7 +55,7 @@ The classes are very imbalanced: most hours are Cloudy, while classes like Foggy
 - **5-fold cross-validation over `max_depth` (1-15):** The training data is split into 5 parts, and each part becomes a validation model for the remaining testing sets,taking turns. This is repeated for every depth from 1 to 15 and scored by macro F1. It stops the tree from growing too deep, because a overly deep tree memorises the training data and does worse on unseen data (overfitting problem).
 - **Grid search over `max_depth`, `min_samples_leaf` and `ccp_alpha`:** Every combination of these parameters is evaluated repeatedly with 5-fold CV, and the combination with the best macro F1 is chosen. This finds the best model after many evaluations, and it also tests pruning (`ccp_alpha`) and leaf size, which the depth search alone does not.
 
-Best depth: **XX**. Best grid search parameters: **{...}** .
+
 
 
 ## Running
