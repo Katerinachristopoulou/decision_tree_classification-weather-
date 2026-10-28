@@ -166,7 +166,7 @@ param_set_1 = {
 param_set_2 = {
     "criterion": "entropy",
     "min_samples_leaf": 5,
-    "ccp_alpha": 0.0001,  # Parameter Set 2: Entropy, pruned (value from grid search)
+    "ccp_alpha": 0.0001,  # Parameter Set 2: Entropy, lightly pruned (one of the grid search values)
 }
 
 param_sets = [("Set1", param_set_1), ("Set2", param_set_2)]
