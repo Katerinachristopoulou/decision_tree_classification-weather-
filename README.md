@@ -55,7 +55,21 @@ The classes are very imbalanced: most hours are Cloudy, while classes like Foggy
 - **5-fold cross-validation over `max_depth` (1-15):** The training data is split into 5 parts, and each part becomes a validation model for the remaining testing sets,taking turns. This is repeated for every depth from 1 to 15 and scored by macro F1. It stops the tree from growing too deep, because a overly deep tree memorises the training data and does worse on unseen data (overfitting problem).
 - **Grid search over `max_depth`, `min_samples_leaf` and `ccp_alpha`:** Every combination of these parameters is evaluated repeatedly with 5-fold CV, and the combination with the best macro F1 is chosen. This finds the best model after many evaluations, and it also tests pruning (`ccp_alpha`) and leaf size, which the depth search alone does not.
 
+### Parameter Set Comparison
 
+Two decision tree setups were compared to see how the split rule and pruning change the results:
+
+| | Criterion | `min_samples_leaf` | `ccp_alpha` | Description |
+|---|---|---|---|---|
+| **Set 1** | Gini | 1 | 0.0 | No pruning |
+| **Set 2** | Entropy | 5 | 0.0001 | Pruned (`ccp_alpha` from the grid search) |
+
+Both sets used `class_weight="balanced"` and were tested in two ways:
+
+- **K-fold cross-validation** with 5 and 10 folds.
+- **Random train/test splits** (70/30 and 80/20), each done 10 times.
+
+For each test, the average and standard deviation of accuracy and macro F1 were recorded. The standard deviation shows whether a gap between the two sets is real or just chance. All results are in `DecisionTree_Comparison.xlsx`.
 
 
 ## Running
