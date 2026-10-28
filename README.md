@@ -106,7 +106,14 @@ Majority-class baseline accuracy: **0.7940**
 ![Set 1 tree](tree_set1.png)
 
 ![Set 2 tree](tree_set2.png)
+## Discussion 
+## Discussion
 
+- **Set 1 (Gini, unpruned) did better than Set 2 (entropy, pruned).** It had higher accuracy (about 0.87 vs. 0.72-0.73) and a better macro F1 (0.74-0.75 vs. 0.71-0.72) in every validation setup. This means the unpruned Gini tree is better overall and also at recognising all five classes, including the rare ones. The accuracy gap is much bigger than the standard deviations (at most 0.012), so it is a real difference and not just chance. The macro F1 gap is smaller, so it is less certain, but Set 1 still came out ahead every time.
+- **The data needs a complex tree.** The grid search chose no pruning, no depth limit and `min_samples_leaf` = 1, which agrees with Set 1 winning. Set 2's pruning and larger leaf size lowered both accuracy and macro F1. The depth search picked 15, the deepest value tried, so its range was probably too narrow.
+- **Baseline:** Always predicting the most common class gives 0.794 accuracy. Set 1 and the grid search model (0.866) beat this. Set 2 (about 0.72) and the depth-15 model (0.776) fall below it in accuracy. This is because `class_weight="balanced"` gives up some accuracy on the common class to detect the rare ones better, which is why macro F1 is the fairer measure here.
+- **Limitations:** Neighbouring hours are very similar, so a random split can put almost identical hours in both training and testing. This may make the scores look better than they are and favours deep trees that memorise. Set 2 also differs from Set 1 in three ways at once (criterion, leaf size and pruning), so the results can't show which one caused the drop.Rare classes are the hardest to predict
+  
 ## Running
 
 ```bash
